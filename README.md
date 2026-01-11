@@ -34,11 +34,12 @@ access the userscript manager's menu and figure out how to add a new script, in 
 
 # Features
 
-the modmenu currently ads 3 features:
+the modmenu currently ads 4 features:
 
 - a change name button
 - a force clear button
 - a force bublish button
+- save/load buttons
 
 the modmenu is currently editor-oriented but that can change soon
 

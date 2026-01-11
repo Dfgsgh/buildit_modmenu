@@ -11,6 +11,24 @@
 
 (function() {
     'use strict';
+
+    function copyData(data) {
+  const ta = document.createElement("textarea");
+  ta.value = data;
+  ta.style.position = "fixed"; // avoid scroll jump
+  ta.style.opacity = "0";
+  ta.style.pointerEvents = "none";
+
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+
+  document.execCommand("copy");
+
+  document.body.removeChild(ta);
+}
+
+
     function promptAlways(message, defaultValue = "") {
   return new Promise(resolve => {
     const overlay = document.createElement("div");
@@ -72,7 +90,7 @@
     btn.className = "debug-btn";
 
     btn.style.position = "fixed";
-    btn.style.top = `${10 + document.querySelectorAll(".debug-btn").length * 40}px`;
+    btn.style.top = `${70 + document.querySelectorAll(".debug-btn").length * 40}px`;
     btn.style.right = "10px";
     btn.style.zIndex = "9999";
 
@@ -97,4 +115,17 @@
       "Force-publish the map",
       () => {redisFrontendServices.save()}
       )
+
+  makeButton("Export level as json",
+             () => copyData(JSON.stringify({name:map.mapData.mapName, flagData : map.mapData.flagData, goalData : map.mapData.goalData, allTiles: map.allTiles}
+             )))
+
+ makeButton("Import a level as a json string", async () => {
+ const data = await promptAlways("Input the json string.");
+ const pdata = JSON.parse(data);
+ map.mapData.mapName = pdata.name;
+ map.mapData.flagData = pdata.flagData;
+ map.mapData.goalData = pdata.goalData;
+ map.allTiles = pdata.allTiles;})
+
 })();
